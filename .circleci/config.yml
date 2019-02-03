@@ -1,0 +1,38 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/datastructure-in-scala
+    docker:
+      - image: codestar/circleci-scala-sbt-git:scala-2.12.8-sbt-1.1.6
+    environment:
+      - SBT_VERSION: 1.2.1
+    steps:
+      - checkout
+      - restore_cache:
+          key: sbt-cache
+      - run:
+          name: Compile datastructure-in-scala and package
+          command: cat /dev/null | sbt clean update package
+      - store_artifacts:
+          path: target/universal/datastructure-in-scala.zip
+          destination: datastructure-in-scala
+      - save_cache:
+          key: sbt-cache
+          paths:
+            - "~/.ivy2/cache"
+            - "~/.sbt"
+            - "~/.m2"
+#      - deploy:
+#          command: |
+#            mv target/universal/algorithms-in-scala.zip $CIRCLE_ARTIFACTS/$ARTIFACT_BUILD
+#            aws s3 cp $CIRCLE_ARTIFACTS/$ARTIFACT_BUILD s3://devops.datapunks.org/builds/samplescala/ --metadata {\"git_sha1\":\"$CIRCLE_SHA1\"}
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+                - develop
