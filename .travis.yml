@@ -1,0 +1,14 @@
+language: scala
+
+jdk: oraclejdk8
+
+scala:
+  - 2.12.6
+
+script:
+  - sbt ++$TRAVIS_SCALA_VERSION clean update package
+
+branches:
+  only:
+    - master
+    - develop
