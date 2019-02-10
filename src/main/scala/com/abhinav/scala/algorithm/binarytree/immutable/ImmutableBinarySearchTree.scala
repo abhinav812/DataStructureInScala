@@ -1,6 +1,6 @@
 package com.abhinav.scala.algorithm.binarytree.immutable
 
-object BinarySearchTree {
+object ImmutableBinarySearchTree {
 
   /*
     insert(node, key, value)
